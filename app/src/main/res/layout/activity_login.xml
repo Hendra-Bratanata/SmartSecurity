@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/login"
+    tools:context=".Activity.Login">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:layout_margin="15dp"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/LabelStyle"
+            android:layout_gravity="center"
+            android:text="Security Smart Login"
+            android:layout_marginTop="15dp"
+            android:textSize="25sp"/>
+
+        <ImageView
+            android:layout_marginTop="5dp"
+            android:src="@drawable/loginlogo"
+            android:layout_height="200dp"
+            android:layout_width="match_parent"/>
+
+        <EditText
+            android:id="@+id/user_login"
+            style="@style/EditTextStyleLogin"
+            android:hint="Username"
+            android:layout_gravity="center"
+            android:drawableLeft="@drawable/ic_person_black_24dp"
+            android:drawablePadding="15dp"
+            android:inputType="textEmailAddress"
+            android:layout_marginTop="10dp"
+            android:layout_width="310dp"
+            android:layout_height="50dp"/>
+
+        <EditText
+            android:id="@+id/password_login"
+            style="@style/EditTextStyleLogin"
+            android:hint="Password"
+            android:drawableLeft="@drawable/ic_lock_black_24dp"
+            android:drawablePadding="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_gravity="center"
+            android:inputType="textPassword"
+            android:layout_width="310dp"
+            android:layout_height="50dp"/>
+
+        <ProgressBar
+            android:id="@+id/loadingLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btn_login"
+            style="@style/SolidButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_marginTop="15dp"
+            android:onClick="LOGIN"
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="35dp"
+            android:text="LOGIN"
+            tools:ignore="OnClick" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_marginTop="70dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:clickable="true"
+            android:id="@+id/no_account"
+            android:fontFamily="monospace"
+            android:text="Create Account? SignUp"
+            android:textSize="15sp"
+            style="@style/LabelStyle"/>
+    </LinearLayout>
+
+
+</RelativeLayout>

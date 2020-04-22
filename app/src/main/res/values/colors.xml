@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#1f222b</color>
+    <color name="colorPrimaryDark">#7C807C</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="hitam">#000000</color>
+    <color name="bfsplash">#1f222b</color>
+    <color name="aliceblue">#F0F8FF</color>
+    <color name="login">#1f2229</color>
+    <color name="ghostwhite">#F8F8FF</color>
+    <color name="skyblue">#00BFFF</color>
+</resources>
