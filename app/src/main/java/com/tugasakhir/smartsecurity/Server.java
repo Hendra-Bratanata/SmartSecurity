@@ -23,38 +23,38 @@ public class Server {
     public static RequestQueue queue;
     public static StringRequest stringRequest;
 
-    public static void Login (final String user, final String pass, final Context context){
-        queue = Volley.newRequestQueue(context);
-        stringRequest = new StringRequest(Request.Method.GET, Url + "User.php", new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject object = new JSONObject(response);
-                    JSONArray array = object.getJSONArray("data");
-                    for (int i = 0; i < array.length(); i++) {
-                        JSONObject obj2 = array.getJSONObject(i);
-                        PojoLoginUser pojoLoginUser = new PojoLoginUser(obj2);
+//    public static void Login (final String user, final String pass, final Context context){
+//        queue = Volley.newRequestQueue(context);
+//        stringRequest = new StringRequest(Request.Method.GET, Url + "User.php", new Response.Listener<String>() {
+//            @Override
+//            public void onResponse(String response) {
+//                try {
+//                    JSONObject object = new JSONObject(response);
+//                    JSONArray array = object.getJSONArray("data");
+//                    for (int i = 0; i < array.length(); i++) {
+//                        JSONObject obj2 = array.getJSONObject(i);
+//                        PojoLoginUser pojoLoginUser = new PojoLoginUser(obj2);
+//
+//                        if (pojoLoginUser.user.equals(user) && pojoLoginUser.pass.equals(pass)){
+//                            Intent intent = new Intent(context, MainActivity.class);
+//                            context.startActivity(intent);
+//                        }
+//                    }
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//
+//            }
+//        });
+//
+//        queue.add(stringRequest);
+//    }
 
-                        if (pojoLoginUser.user.equals(user) && pojoLoginUser.pass.equals(pass)){
-                            Intent intent = new Intent(context, MainActivity.class);
-                            context.startActivity(intent);
-                        }
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-
-        queue.add(stringRequest);
-    }
-
-    public static void Daftar (String pass,String user, Context context){
+    public static void Daftar(String passEncript, String s, String pass, String user, Context context){
         String UrlDaftar = Url+"Login.php?user="+user+"&pass="+pass;
         stringRequest = new StringRequest(Request.Method.GET, UrlDaftar, new Response.Listener<String>() {
             @Override

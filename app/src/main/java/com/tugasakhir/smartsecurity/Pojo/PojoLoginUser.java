@@ -6,28 +6,10 @@ import android.os.Parcelable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class PojoLoginUser implements Parcelable {
-    public String user;
-    public String pass;
-    public String id;
-
-    protected PojoLoginUser(Parcel in) {
-        user = in.readString();
-        pass = in.readString();
-        id = in.readString();
-    }
-
-    public static final Creator<PojoLoginUser> CREATOR = new Creator<PojoLoginUser>() {
-        @Override
-        public PojoLoginUser createFromParcel(Parcel in) {
-            return new PojoLoginUser(in);
-        }
-
-        @Override
-        public PojoLoginUser[] newArray(int size) {
-            return new PojoLoginUser[size];
-        }
-    };
+public class PojoLoginUser {
+    String user;
+    String pass;
+    String id;
 
     public String getUser() {
         return user;
@@ -58,25 +40,14 @@ public class PojoLoginUser implements Parcelable {
             String namaUser = obj.getString("user");
             String passUser = obj.getString("pass");
             String idUser = obj.getString("id");
-            user = namaUser;
-            pass = passUser;
-            id = idUser;
+
+            this.user = namaUser;
+            this.pass = passUser;
+            this.id = idUser;
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(user);
-        parcel.writeString(pass);
-        parcel.writeString(id);
-    }
 }

@@ -1,4 +1,4 @@
-package com.tugasakhir.smartsecurity;
+package com.tugasakhir.smartsecurity.UtilityAtribute;
 
 import android.os.Build;
 

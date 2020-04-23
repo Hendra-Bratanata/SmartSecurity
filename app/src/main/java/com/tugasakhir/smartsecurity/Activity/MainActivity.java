@@ -3,9 +3,11 @@ package com.tugasakhir.smartsecurity.Activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.recycleViewUserLog)
     RecyclerView recyclerView;
     LogUserAdapter adapter;
+    private SwipeRefreshLayout refreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,21 @@ public class MainActivity extends AppCompatActivity {
         String Url_Log = "http://khoerul.96.lt/users.php";
         DemoAsync demoAsync = new DemoAsync();
         demoAsync.execute(Url_Log);
+
+        refreshLayout = findViewById(R.id.swipe_refresh);
+        refreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshLayout.setRefreshing(false);
+//                validinput.setVisibility(View.VISIBLE);
+                String url = "http://khoerul.96.lt/users.php";
+                DemoAsync demoASync = new DemoAsync();
+                demoASync.execute(url);
+
+            }
+        });
+
     }
     public class DemoAsync extends AsyncTask<String, Void, ArrayList<PojoLogUser>> {
         @Override
@@ -92,7 +110,8 @@ public class MainActivity extends AppCompatActivity {
                 "Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        MainActivity.super.onBackPressed();
+                        Intent intent = new Intent(MainActivity.this, Login.class);
+                        startActivity(intent);
                         finish();
                     }
                 })

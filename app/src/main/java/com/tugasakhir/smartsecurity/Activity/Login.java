@@ -3,6 +3,9 @@ package com.tugasakhir.smartsecurity.Activity;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -10,21 +13,33 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.tugasakhir.smartsecurity.Pojo.PojoLoginUser;
+import com.tugasakhir.smartsecurity.UtilityAtribute.EncryptsMD5;
 import com.tugasakhir.smartsecurity.R;
-import com.tugasakhir.smartsecurity.Server;
+import com.tugasakhir.smartsecurity.UtilityAtribute.ClassUrl;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.Security;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Login extends AppCompatActivity {
     Button btnLogin;
     EditText edtUser;
     EditText edtPass;
+    private TextView mSignUp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,45 +49,113 @@ public class Login extends AppCompatActivity {
         btnLogin = findViewById(R.id.btn_login);
         edtUser = findViewById(R.id.user_login);
         edtPass = findViewById(R.id.password_login);
+        mSignUp = findViewById(R.id.no_account);
+
+        mSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Login.this, Register.class);
+                startActivity(intent);
+            }
+        });
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
+            // text button menuju register
             public void onClick(View v) {
-                if (TextUtils.isEmpty(edtUser.getText())){
-                    edtUser.setError("Wajib Isi User");
-                }
-                if (TextUtils.isEmpty(edtPass.getText())) {
-                    edtPass.setError("Wajib Isi Password");
-                }
-                else {
-                    String user = edtUser.getText().toString();
-                    String pass = edtPass.getText().toString();
-                    String passMD5 = MD5(pass);
-                    Log.d("Pass", "Password MDS Login"+MD5(pass));
-                    Server.Login(user,passMD5,Login.this);
+                final String user = edtUser.getText().toString();
+                final String pass = edtPass.getText().toString();
+                final String passEncrypt = EncryptsMD5.MD5(pass);
+                Log.d("Password ", "Password MD5 Login " + EncryptsMD5.MD5(pass));
+
+                if (TextUtils.isEmpty(edtUser.getText())) {
+                    edtUser.setError("User harus diisi");
+                    edtUser.requestFocus();
+                } else if (TextUtils.isEmpty(edtPass.getText())) {
+                    edtPass.setError("Password harus diisi");
+                    edtPass.requestFocus();
+                } else {
+                    StringRequest stringRequest = new StringRequest(Request.Method.GET, ClassUrl.Url_Login,
+                            response -> {
+                                try {
+                                    JSONObject obj = new JSONObject(response);
+                                    JSONArray array = obj.getJSONArray("data");
+
+                                    for (int i = 0; i < array.length(); i++) {
+                                        JSONObject jsonObject = array.getJSONObject(i);
+                                        PojoLoginUser user1 = new PojoLoginUser(jsonObject);
+                                        final String user2 = user1.getUser();
+                                        final String pass1 = user1.getPass();
+
+                                        if (user2.equals(user2) && pass1.equals(pass1)) {
+                                            Toast.makeText(Login.this, "Selamat Datang " + user2 + "\n" + passEncrypt, Toast.LENGTH_LONG).show();
+//                                                SharedData.getInstance(getApplicationContext()).storeUserEmail(email);
+//                                                SharedData.getInstance(getApplicationContext()).storeUserPassword(password);
+                                                goToMainActivity();
+                                        } else if (pass1.equals(pass1)) {
+                                            Toast.makeText(Login.this, "Email salah", Toast.LENGTH_LONG).show();
+                                        } else if (user2.equals(user2)) {
+                                            Toast.makeText(Login.this, "Password salah", Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            },
+                            error -> {
+                                Toast.makeText(getApplicationContext(), "Connection Error" + error, Toast.LENGTH_SHORT).show();
+                                error.printStackTrace();
+                            }) {
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            Map<String, String> params = new HashMap<>();
+                            params.put("user", user);
+                            params.put("password", passEncrypt);
+
+                            return params;
+                        }
+                    };
+                    RequestQueue requestQueue = Volley.newRequestQueue(Login.this);
+                    requestQueue.add(stringRequest);
                 }
             }
+
+            //    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+//    private String MD5(String pass) {
+//        String digest = null;
+//        try {
+//            MessageDigest md = MessageDigest.getInstance("MD5");
+//            byte[] hash = md.digest(pass.getBytes(StandardCharsets.UTF_8));
+//            StringBuilder sb = new StringBuilder(2 * hash.length);
+//
+//            for (byte b : hash) {
+//                sb.append(String.format("%02x", b & 0xff));
+//            }
+//            digest = sb.toString();
+//
+//        } catch (NoSuchAlgorithmException ex) {
+//            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+//            Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        return digest;
+//    }
+
         });
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private String MD5(String pass) {
-        String digest = null;
-        try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            byte[] hash = md.digest(pass.getBytes(StandardCharsets.UTF_8));
-            StringBuilder sb = new StringBuilder(2 * hash.length);
+    private void goToMainActivity() {
+        Intent intent = new Intent(Login.this, MainActivity.class);
+        startActivity(intent);
+    }
 
-            for (byte b : hash) {
-                sb.append(String.format("%02x", b & 0xff));
-            }
-            digest = sb.toString();
-
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-            Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return digest;
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
+        builder.setMessage("Ingin Keluar Aplikasi?").setCancelable(false).setPositiveButton(
+                "Yes", (dialogInterface, i) -> Login.super.onBackPressed())
+                .setNegativeButton("No", (dialogInterface, i) -> dialogInterface.cancel());
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }
+
