@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class PojoLoginUser {
+public class USER {
     String user;
     String pass;
     String id;
@@ -35,7 +35,7 @@ public class PojoLoginUser {
         this.id = id;
     }
 
-    public PojoLoginUser(JSONObject obj) {
+    public USER(JSONObject obj) {
         try {
             String namaUser = obj.getString("user");
             String passUser = obj.getString("pass");

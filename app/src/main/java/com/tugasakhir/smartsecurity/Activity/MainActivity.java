@@ -17,7 +17,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.MySSLSocketFactory;
@@ -68,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
             public void onRefresh() {
                 refreshLayout.setRefreshing(false);
 //                validinput.setVisibility(View.VISIBLE);
-                String url = "http://khoerul.96.lt/users.php";
+                String url = "http://2017.devcamp.tech/User.php";
                 DemoAsync demoASync = new DemoAsync();
                 demoASync.execute(url);
 
@@ -124,20 +123,12 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed () {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Ingin Keluar Aplikasi?").setCancelable(false).setPositiveButton(
-                "Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Intent intent = new Intent(MainActivity.this, Login.class);
-                        startActivity(intent);
-                        finish();
-                    }
+                "Yes", (dialogInterface, i) -> {
+                    Intent intent = new Intent(MainActivity.this, Login.class);
+                    startActivity(intent);
+                    finish();
                 })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                    }
-                });
+                .setNegativeButton("No", (dialogInterface, i) -> dialogInterface.cancel());
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }

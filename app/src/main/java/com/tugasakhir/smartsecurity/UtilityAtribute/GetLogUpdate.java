@@ -25,7 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+
 public class GetLogUpdate extends JobService {
     @Override
     public boolean onStartJob(JobParameters jobParameters) {
@@ -62,7 +62,9 @@ public class GetLogUpdate extends JobService {
                             notif.sendNotif(getApplicationContext(),logUser.getInformation(), "now",logUser.getInformation(), i);
                         }
 
-                        jobFinished(job, false);
+
+                            jobFinished(job, false);
+
                     }
 
                 }catch (JSONException e){

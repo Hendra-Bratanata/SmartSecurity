@@ -12,8 +12,8 @@ android {
     defaultConfig {
         buildConfigField("String", "BASE_URL", "\"http://2017.devcamp.tech/\"")
         applicationId "com.tugasakhir.smartsecurity"
-        minSdkVersion 14
-        targetSdkVersion 29
+        minSdkVersion 21
+       targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

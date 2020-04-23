@@ -1,7 +1,6 @@
 package com.tugasakhir.smartsecurity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -10,10 +9,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.tugasakhir.smartsecurity.Activity.MainActivity;
-import com.tugasakhir.smartsecurity.Pojo.PojoLoginUser;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -33,7 +29,7 @@ public class Server {
 //                    JSONArray array = object.getJSONArray("data");
 //                    for (int i = 0; i < array.length(); i++) {
 //                        JSONObject obj2 = array.getJSONObject(i);
-//                        PojoLoginUser pojoLoginUser = new PojoLoginUser(obj2);
+//                        USER pojoLoginUser = new USER(obj2);
 //
 //                        if (pojoLoginUser.user.equals(user) && pojoLoginUser.pass.equals(pass)){
 //                            Intent intent = new Intent(context, MainActivity.class);

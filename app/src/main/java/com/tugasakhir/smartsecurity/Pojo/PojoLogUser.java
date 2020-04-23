@@ -38,8 +38,8 @@ public class PojoLogUser {
         try {
 
             String user = object.getString("user");
-            String time = object.getString("time");
-            String informasi = object.getString("informasi");
+            String time = object.getString("pass");
+            String informasi = object.getString("id");
 
 
             this.user = user;
