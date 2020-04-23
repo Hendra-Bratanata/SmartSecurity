@@ -4,6 +4,10 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
@@ -27,6 +31,7 @@ import com.tugasakhir.smartsecurity.Pojo.PojoLoginUser;
 import com.tugasakhir.smartsecurity.UtilityAtribute.EncryptsMD5;
 import com.tugasakhir.smartsecurity.R;
 import com.tugasakhir.smartsecurity.UtilityAtribute.ClassUrl;
+import com.tugasakhir.smartsecurity.UtilityAtribute.GetLogUpdate;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,7 +45,9 @@ public class Login extends AppCompatActivity {
     EditText edtUser;
     EditText edtPass;
     private TextView mSignUp;
+    int jobId = 10;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,7 +101,7 @@ public class Login extends AppCompatActivity {
 //                                                SharedData.getInstance(getApplicationContext()).storeUserPassword(password);
                                                 goToMainActivity();
                                         } else if (pass1.equals(pass1)) {
-                                            Toast.makeText(Login.this, "Email salah", Toast.LENGTH_LONG).show();
+                                            Toast.makeText(Login.this, "USer salah", Toast.LENGTH_LONG).show();
                                         } else if (user2.equals(user2)) {
                                             Toast.makeText(Login.this, "Password salah", Toast.LENGTH_LONG).show();
                                         }
@@ -118,6 +125,7 @@ public class Login extends AppCompatActivity {
                     };
                     RequestQueue requestQueue = Volley.newRequestQueue(Login.this);
                     requestQueue.add(stringRequest);
+
                 }
             }
 
@@ -141,7 +149,48 @@ public class Login extends AppCompatActivity {
 //        return digest;
 //    }
 
-        });
+        });startJob();
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private void startJob(){
+        Log.d("LOG", "startJob: ");
+        if (cekLog(this)){
+            Toast.makeText(this, "LoginLogin", Toast.LENGTH_LONG).show();
+        }else {
+            ComponentName componentName = new ComponentName(this, GetLogUpdate.class);
+            JobInfo.Builder builder = new JobInfo.Builder(jobId, componentName);
+            builder.setRequiresCharging(false);
+            builder.setRequiresDeviceIdle(false);
+            builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+                builder.setPeriodic(15*60*1000);
+            }else {
+                builder.setPeriodic(3*60*1000);
+            }
+            JobScheduler jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
+            jobScheduler.schedule(builder.build());
+        }
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private boolean cekLog (Context context){
+        Log.d("LOG", "cekLog: " );
+        boolean isLoged = false;
+
+        JobScheduler jobScheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
+        if (jobScheduler != null){
+            for (JobInfo jobInfo : jobScheduler.getAllPendingJobs()){
+                if (jobInfo.getId() == jobId){
+                    isLoged = true;
+                }
+            }
+
+        }
+        return isLoged;
     }
 
     private void goToMainActivity() {

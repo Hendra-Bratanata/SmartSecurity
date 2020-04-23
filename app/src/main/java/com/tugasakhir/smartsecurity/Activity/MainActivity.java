@@ -1,23 +1,32 @@
 package com.tugasakhir.smartsecurity.Activity;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.AlertDialog;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.MySSLSocketFactory;
 import com.loopj.android.http.SyncHttpClient;
 import com.tugasakhir.smartsecurity.Adapter.LogUserAdapter;
+import com.tugasakhir.smartsecurity.Notification.Notif;
 import com.tugasakhir.smartsecurity.Pojo.PojoLogUser;
 import com.tugasakhir.smartsecurity.R;
+import com.tugasakhir.smartsecurity.UtilityAtribute.GetLogUpdate;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -35,10 +44,15 @@ public class MainActivity extends AppCompatActivity {
     LogUserAdapter adapter;
     private SwipeRefreshLayout refreshLayout;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
 
         ButterKnife.bind(this);
         adapter = new LogUserAdapter(this);
@@ -62,6 +76,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
+
+
     public class DemoAsync extends AsyncTask<String, Void, ArrayList<PojoLogUser>> {
         @Override
         protected ArrayList<PojoLogUser> doInBackground(String... strings) {
